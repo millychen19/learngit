@@ -49,4 +49,58 @@ A：添加某个文件时，该文件必须在当前目录下存在，用ls或者dir命令查看当前目录的文件
 $ git status
 git status命令可以让我们时刻掌握仓库当前的状态，上面的命令输出告诉我们，readme.txt被修改过了，但还没有准备提交的修改。
 
+git log命令查看：
+
+$ git log
+
+用HEAD表示当前版本，也就是最新的提交1094adb...（注意我的提交ID和你的肯定不一样），上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100。
+
+现在，我们要把当前版本append GPL回退到上一个版本add distributed，就可以使用git reset命令：
+
+$ git reset --hard HEAD^
+
+还可以继续回退到上一个版本wrote a readme file，不过且慢，让我们用git log再看看现在版本库的状态：
+
+$ git log
+commit e475afc93c209a690c39c13a46716e8fa000c366 (HEAD -> master)
+Author: Michael Liao <askxuefeng@gmail.com>
+Date:   Fri May 18 21:03:36 2018 +0800
+
+    add distributed
+
+commit eaadf4e385e865d25c48e7ca9c8395c3f7dfaef0
+Author: Michael Liao <askxuefeng@gmail.com>
+Date:   Fri May 18 20:59:18 2018 +0800
+
+    wrote a readme file
+最新的那个版本append GPL已经看不到了！好比你从21世纪坐时光穿梭机来到了19世纪，想再回去已经回不去了，肿么办？
+
+办法其实还是有的，只要上面的命令行窗口还没有被关掉，你就可以顺着往上找啊找啊，找到那个append GPL的commit id是1094adb...，于是就可以指定回到未来的某个版本：
+
+$ git reset --hard 1094a
+HEAD is now at 83b0afe append GPL
+
+在Git中，总是有后悔药可以吃的。当你用$ git reset --hard HEAD^回退到add distributed版本时，再想恢复到append GPL，就必须找到append GPL的commit id。Git提供了一个命令git reflog用来记录你的每一次命令：
+
+$ git reflog
+e475afc HEAD@{1}: reset: moving to HEAD^
+1094adb (HEAD -> master) HEAD@{2}: commit: append GPL
+e475afc HEAD@{3}: commit: add distributed
+eaadf4e HEAD@{4}: commit (initial): wrote a readme file
+终于舒了口气，从输出可知，append GPL的commit id是1094adb，现在，你又可以乘坐时光机回到未来了。
+
+
+小结
+现在总结一下：
+HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。
+穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+
+
+
+
+
+
+
+
 
