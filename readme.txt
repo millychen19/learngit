@@ -232,4 +232,38 @@ $ git checkout dev
 $ git branch
 git branch命令会列出所有分支，当前分支前面会标一个*号
 
-Creating a new branch is quick & simple.
+
+dev修改文件
+现在，dev分支的工作完成，我们就可以切换回master分支：
+$ git checkout master
+我们把dev分支的工作成果合并到master分支上：
+$ git merge dev
+git merge命令用于合并指定分支到当前分支。
+$ git merge dev
+
+合并完成后，就可以放心地删除dev分支了：
+$ git branch -d dev
+删除后，查看branch，就只剩下master分支了：
+$ git branch
+
+switch
+我们注意到切换分支使用git checkout <branch>，而前面讲过的撤销修改则是git checkout -- <file>，同一个命令，有两种作用，确实有点令人迷惑。
+实际上，切换分支这个动作，用switch更科学。因此，最新版本的Git提供了新的git switch命令来切换分支：
+
+创建并切换到新的dev分支，可以使用：
+$ git switch -c dev
+直接切换到已有的master分支，可以使用：
+$ git switch master
+使用新的git switch命令，比git checkout要更容易理解。
+
+小结
+Git鼓励大量使用分支：
+查看分支：git branch
+创建分支：git branch <name>
+切换分支：git checkout <name>或者git switch <name>
+创建+切换分支：git checkout -b <name>或者git switch -c <name>
+合并某分支到当前分支：git merge <name>
+删除分支：git branch -d <name>
+
+Creating a new branch is quick AND simple.
+
