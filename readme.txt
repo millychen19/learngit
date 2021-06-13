@@ -217,3 +217,17 @@ $ git remote rm origin
 $ git clone git@github.com:michaelliao/gitskills.git
 
 Git支持多种协议，包括https，但ssh协议速度最快。
+
+https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424
+
+创建与合并分支
+
+首先，我们创建dev分支，然后切换到dev分支：
+$ git checkout -b dev
+git checkout命令加上-b参数表示创建并切换，相当于以下两条命令：
+$ git branch dev
+$ git checkout dev
+
+然后，用git branch命令查看当前分支：
+$ git branch
+git branch命令会列出所有分支，当前分支前面会标一个*号
