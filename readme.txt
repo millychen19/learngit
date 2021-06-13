@@ -104,13 +104,84 @@ https://www.liaoxuefeng.com/wiki/896043488029600/897271968352576
 Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
 
 前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：
-
 第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
 第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
 因为我们创建Git版本库时，Git自动为我们创建了唯一一个master分支，所以，现在，git commit就是往master分支上提交更改。
 你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改。
 
 
+你可以发现，Git会告诉你，git checkout -- file可以丢弃工作区的修改：
 
+$ git checkout -- readme.txt
+命令git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；
+一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+总之，就是让这个文件回到最近一次git commit或git add时的状态。
+
+git checkout -- file命令中的--很重要，没有--，就变成了“切换到另一个分支”的命令，我们在后面的分支管理中会再次遇到git checkout命令。
+
+
+
+Git同样告诉我们，用命令git reset HEAD <file>可以把暂存区的修改撤销掉（unstage），重新放回工作区：
+
+$ git reset HEAD readme.txt
+Unstaged changes after reset:
+M	readme.txt
+git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。
+
+再用git status查看一下，现在暂存区是干净的，工作区有修改：
+
+还记得如何丢弃工作区的修改吗？
+
+$ git checkout -- readme.txt
+
+整个世界终于清静了！
+
+
+小结
+又到了小结时间。
+
+场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+
+场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD <file>，就回到了场景1，第二步按场景1操作。
+
+场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+
+删除文件：
+https://www.liaoxuefeng.com/wiki/896043488029600/900002180232448
+删除工作区：
+$ rm test.txt
+暂存区删除：
+$ git rm test.txt
+提交删除，文件从版本库中删除
+$ git commit -m "remove"
+
+删错了，从版本库恢复文件：
+$ git checkout -- test.txt
+
+git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
+
+小结
+命令git rm用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。
+
+第1步：创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
+
+$ ssh-keygen -t rsa -C "youremail@example.com"
+
+如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
+
+第2步：登陆GitHub，打开个人设置页，选择设置SSHKey的菜单，新增sshkey，新增的key复制公钥。
+
+
+在github中新建远程仓库
+
+关联远程仓库
+$ git remote add origin git@github.com:millychen19/learngit.git
+
+把本地库的所有内容推送到远程库上：
+$ git push -u origin master
+把本地库的内容推送到远程，用git push命令，实际上是把当前分支master推送到远程。
+
+由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
 
 
