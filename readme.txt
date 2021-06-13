@@ -292,4 +292,23 @@ https://www.liaoxuefeng.com/wiki/896043488029600/900005860592480
 Git分支十分强大，在团队开发中应该充分应用。
 合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
 
-bugfix
+bug分支
+https://www.liaoxuefeng.com/wiki/896043488029600/900388704535136
+
+Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：
+$ git stash
+现在，用git status查看工作区，就是干净的（除非有没有被Git管理的文件），因此可以放心地创建分支来修复bug。
+
+修复完bug切回dev分支干活
+git status工作区是干净的，刚才的工作现场存到哪去了？用git stash list命令看看：
+$ git stash list
+stash@{0}: WIP on dev: f52c633 add merge
+
+工作现场还在，Git把stash内容存在某个地方了，但是需要恢复一下，有两个办法：
+一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+另一种方式是用git stash pop，恢复的同时把stash内容也删了：
+$ git stash pop
+再用git stash list查看，就看不到任何stash内容了：
+$ git stash list
+你可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：
+$ git stash apply stash@{0}
