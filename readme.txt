@@ -400,5 +400,51 @@ $ git checkout master
 $ git tag v1.0
 可以用命令git tag查看所有标签：
 $ git tag
+默认标签是打在最新提交的commit上的。有时候，如果忘了打标签，比如，现在已经是周五了，但应该在周一打的标签没有打，怎么办？
+方法是找到历史提交的commit id，然后打上就可以了：
+$ git log --pretty=oneline --abbrev-commit
+
+比方说要对add merge这次提交打标签，它对应的commit id是f52c633，敲入命令：
+$ git tag v0.9 f52c633
+再用命令git tag查看标签：
+$ git tag
+
+注意，标签不是按时间顺序列出，而是按字母排序的。可以用git show <tagname>查看标签信息：
+$ git show v0.9
+还可以创建带有说明的标签，用-a指定标签名，-m指定说明文字：
+$ git tag -a v0.1 -m "version 0.1 released" 1094adb
+用命令git show <tagname>可以看到说明文字：
+
+$ git show v0.1
+ 注意：标签总是和某个commit挂钩。如果这个commit既出现在master分支，又出现在dev分支，那么在这两个分支上都可以看到这个标签。
+小结
+命令git tag <tagname>用于新建一个标签，默认为HEAD，也可以指定一个commit id；
+命令git tag -a <tagname> -m "blablabla..."可以指定标签信息；
+命令git tag可以查看所有标签。
+
+操作标签
+https://www.liaoxuefeng.com/wiki/896043488029600/902335479936480
+如果标签打错了，也可以删除：
+$ git tag -d v0.1
+因为创建的标签都只存储在本地，不会自动推送到远程。所以，打错的标签可以在本地安全删除。
+如果要推送某个标签到远程，使用命令git push origin <tagname>：
+$ git push origin v1.0
+
+或者，一次性推送全部尚未推送到远程的本地标签：
+$ git push origin --tags
+Total 0 (delta 0), reused 0 (delta 0)
+To github.com:michaelliao/learngit.git
+ * [new tag]         v0.9 -> v0.9
+如果标签已经推送到远程，要删除远程标签就麻烦一点，先从本地删除：
+
+$ git tag -d v0.9
+Deleted tag 'v0.9' (was f52c633)
+然后，从远程删除。删除命令也是push，但是格式如下：
+
+$ git push origin :refs/tags/v0.9
+To github.com:michaelliao/learngit.git
+ - [deleted]         v0.9
+要看看是否真的从远程库删除了标签，可以登陆GitHub查看。
+
 
 
