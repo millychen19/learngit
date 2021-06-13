@@ -1,3 +1,5 @@
+廖雪峰git教程 学习进程摘抄
+
 Git is a version control system.
 Git is free software.
 
@@ -184,4 +186,34 @@ $ git push -u origin master
 
 由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
 
+从现在起，只要本地作了提交，就可以通过命令：
 
+$ git push origin master
+把本地master分支的最新修改推送至GitHub，现在，你就拥有了真正的分布式版本库！
+
+删除远程库
+如果添加的时候地址写错了，或者就是想删除远程库，可以用git remote rm <name>命令。使用前，建议先用git remote -v查看远程库信息：
+
+$ git remote -v
+然后，根据名字删除，比如删除origin：
+
+$ git remote rm origin
+此处的“删除”其实是解除了本地和远程的绑定关系，并不是物理上删除了远程库。远程库本身并没有任何改动。要真正删除远程库，需要登录到GitHub，在后台页面找到删除按钮再删除。
+
+
+小结
+要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+
+关联一个远程库时必须给远程库指定一个名字，origin是默认习惯命名；
+
+关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+
+此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+
+分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！当有网络的时候，再把本地提交推送一下就完成了同步，真是太方便了！
+
+小结
+要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
+$ git clone git@github.com:michaelliao/gitskills.git
+
+Git支持多种协议，包括https，但ssh协议速度最快。
