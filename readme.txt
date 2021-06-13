@@ -231,3 +231,5 @@ $ git checkout dev
 然后，用git branch命令查看当前分支：
 $ git branch
 git branch命令会列出所有分支，当前分支前面会标一个*号
+
+Creating a new branch is quick & simple.
